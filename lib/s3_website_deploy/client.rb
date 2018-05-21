@@ -8,7 +8,7 @@ module S3WebsiteDeploy
     CONTENT_MD5_KEY = "content-md5"
 
     LocalFile = Struct.new(:path, :local_path, :content_md5)
-    S3File = Struct.new(:path, :s3_uri, :etag)
+    S3File = Struct.new(:path, :etag)
 
     def initialize(source:, region:, bucket:, prefix:, logger: Logger.new(STDOUT))
       @source = Pathname.new(source)
@@ -97,8 +97,7 @@ module S3WebsiteDeploy
         )
         res.contents.each do |content|
           pathname = Pathname.new(content.key)
-          uri = "s3://#{@bucket}/#{content.key}"
-          files << S3File.new(pathname.relative_path_from(prefix_pathname).to_s, uri, JSON.parse(content.etag))
+          files << S3File.new(pathname.relative_path_from(prefix_pathname).to_s, JSON.parse(content.etag))
         end
         next_token = res.next_continuation_token
         break unless next_token
