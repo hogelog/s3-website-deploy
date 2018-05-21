@@ -1,5 +1,6 @@
 require "bundler/setup"
-require "s3/website/deploy"
+require "s3_website_deploy"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
