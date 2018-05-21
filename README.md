@@ -1,8 +1,6 @@
-# S3::Website::Deploy
+# S3WebsiteDeploy
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/s3/website/deploy`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+s3-website-deploy is deploy tool for AWS S3 Website.
 
 ## Installation
 
@@ -12,17 +10,15 @@ Add this line to your application's Gemfile:
 gem 's3-website-deploy'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install s3-website-deploy
-
 ## Usage
 
-TODO: Write usage instructions here
+```console
+$ bundle exec s3-website-deploy --bucket some-bucket --source build/ --region ap-northeast-1
+I, [2018-05-22T00:18:01.580281 #37788]  INFO -- : Start deploying build/ -> s3://some-bucket/
+I, [2018-05-22T00:18:02.841962 #37788]  INFO -- : Creating: favicon.ico
+I, [2018-05-22T00:18:02.842058 #37788]  INFO -- : Creating: index.html
+I, [2018-05-22T00:18:02.842105 #37788]  INFO -- : Finish deploying build/ -> s3://some-bucket/
+```
 
 ## Development
 
@@ -32,7 +28,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/s3-website-deploy.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hogelog/s3-website-deploy.
 
 ## License
 
