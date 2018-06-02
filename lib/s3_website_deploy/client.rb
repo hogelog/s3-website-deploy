@@ -10,23 +10,21 @@ module S3WebsiteDeploy
     LocalFile = Struct.new(:path, :local_path, :content_md5)
     S3File = Struct.new(:path, :etag)
 
-    def initialize(source:, region:, bucket:, prefix:, logger: Logger.new(STDOUT))
-      @source = Pathname.new(source)
-      @region = region
-      @bucket = bucket
-      @prefix = prefix
+    def initialize(config, logger: Logger.new(STDOUT))
+      @config = config
       @logger = logger
     end
 
     def run
-      @logger.info("Start deploying #{@source} -> s3://#{@bucket}/#{@prefix}")
+      @logger.info("Start deploying #{@config.source} -> s3://#{@config.bucket}/#{@config.prefix}")
       file_stats = fetch_file_stats
       deploy(file_stats)
-      @logger.info("Finish deploying #{@source} -> s3://#{@bucket}/#{@prefix}")
+      @logger.info("Finish deploying #{@config.source} -> s3://#{@config.bucket}/#{@config.prefix}")
     end
 
     def fetch_file_stats
       stats = {}
+
       source_files.each do |file|
         stats[file.path] = { local: file }
       end
@@ -59,40 +57,44 @@ module S3WebsiteDeploy
     end
 
     def deploy_local_file(local_file)
-      key = "#{@prefix}#{local_file.path}"
+      key = "#{@config.prefix}#{local_file.path}"
       File.open(local_file.local_path, "rb") do |file|
         s3.put_object(
           body: file,
-          bucket: @bucket,
+          bucket: @config.bucket,
           key: key,
         )
       end
     end
 
     def delete_remote_file(remote_file)
-      key = "#{@prefix}#{remote_file.path}"
+      key = "#{@config.prefix}#{remote_file.path}"
       s3.delete_object(
-        bucket: @bucket,
+        bucket: @config.bucket,
         key: key,
       )
     end
 
     def source_files
-      Pathname.glob(@source.join("**")).map do |pathname|
+      source_directory = Pathname.new(@config.source)
+      files = []
+      Pathname.glob(File.join(@config.source, "**", "*")).map do |pathname|
+        next if pathname.directory?
         path = pathname.to_s
         content_md5 = Digest::MD5.hexdigest(File.read(path))
-        LocalFile.new(pathname.relative_path_from(@source).to_s, path, content_md5)
+        files << LocalFile.new(pathname.relative_path_from(source_directory).to_s, path, content_md5)
       end
+      files
     end
 
     def remote_files
       files = []
-      prefix_pathname = Pathname.new(@prefix)
+      prefix_pathname = Pathname.new(@config.prefix)
       next_token = nil
       loop do
         res = s3.list_objects_v2(
-          bucket: @bucket,
-          prefix: @prefix,
+          bucket: @config.bucket,
+          prefix: @config.prefix,
           continuation_token: next_token,
         )
         res.contents.each do |content|
@@ -108,7 +110,7 @@ module S3WebsiteDeploy
     private
 
     def s3
-      @s3 ||= Aws::S3::Client.new(region: @region)
+      @s3 ||= Aws::S3::Client.new(region: @config.region)
     end
   end
 end

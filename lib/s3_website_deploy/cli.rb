@@ -8,7 +8,8 @@ module S3WebsiteDeploy
       region = opts["region"] or raise ArgumentError, "--region is required"
       bucket = opts["bucket"] or raise ArgumentError, "--bucket is required"
       prefix = opts["prefix"] || ""
-      S3WebsiteDeploy::Client.new(source: source, region: region, bucket: bucket, prefix: prefix).run
+      config = S3WebsiteDeploy::Configuration.new(source: source, region: region, bucket: bucket, prefix: prefix)
+      S3WebsiteDeploy::Client.new(config).run
     end
   end
 end

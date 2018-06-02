@@ -10,7 +10,8 @@ RSpec.describe S3WebsiteDeploy::Client do
   end
 
   let(:log) { StringIO.new }
-  let(:client) { S3WebsiteDeploy::Client.new(source: "build/", region: "ap-northeast-1", bucket: "some-bucket", prefix: "", logger: Logger.new(log)) }
+  let(:config) { S3WebsiteDeploy::Configuration.new(source: "build/", region: "ap-northeast-1", bucket: "some-bucket", prefix: "") }
+  let(:client) { S3WebsiteDeploy::Client.new(config, logger: Logger.new(log)) }
   let(:file_stats) do
     {
       "create.html": { local: local_file("create.html", "build/create.html", "xxxx") },
