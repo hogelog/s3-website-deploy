@@ -26,7 +26,7 @@ module S3WebsiteDeploy
       prefix = opts["prefix"] || file_opts["prefix"] || ""
       dryrun = opts["dryrun"]
 
-      config = S3WebsiteDeploy::Configuration.new(source: source, region: region, bucket: bucket, prefix: prefix, dryrun: dryrun)
+      S3WebsiteDeploy::Configuration.new(source: source, region: region, bucket: bucket, prefix: prefix, dryrun: dryrun)
     end
   end
 end
