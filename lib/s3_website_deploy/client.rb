@@ -81,7 +81,7 @@ module S3WebsiteDeploy
       Pathname.glob(File.join(@config.source, "**", "*")).map do |pathname|
         next if pathname.directory?
         path = pathname.to_s
-        content_md5 = Digest::MD5.hexdigest(File.read(path))
+        content_md5 = Digest::MD5.hexdigest(File.binread(path))
         files << LocalFile.new(pathname.relative_path_from(source_directory).to_s, path, content_md5)
       end
       files
