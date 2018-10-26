@@ -35,4 +35,13 @@ RSpec.describe S3WebsiteDeploy::Client do
       expect(log.string).to match(/Deleting: delete.html/)
     end
   end
+
+  describe "#source_files" do
+    let(:log) { StringIO.new }
+    let(:config) { S3WebsiteDeploy::Configuration.new(source: "spec/dummy", region: "ap-northeast-1", bucket: "some-bucket", prefix: "") }
+    let(:client) { S3WebsiteDeploy::Client.new(config, logger: Logger.new(log)) }
+    it "list files" do
+      expect(client.source_files.map(&:path)).to match_array(%w(deploy.yml favicon.ico index.html dir/dir/hello.txt))
+    end
+  end
 end
