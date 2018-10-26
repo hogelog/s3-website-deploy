@@ -11,7 +11,7 @@ RSpec.describe S3WebsiteDeploy::Client do
 
   describe "#run" do
     let(:log) { StringIO.new }
-    let(:config) { S3WebsiteDeploy::Configuration.new(source: "build/", region: "ap-northeast-1", bucket: "some-bucket", prefix: "") }
+    let(:config) { S3WebsiteDeploy::Configuration.new(source: "build/", region: "ap-northeast-1", bucket: "some-bucket", prefix: "", dryrun: false) }
     let(:client) { S3WebsiteDeploy::Client.new(config, logger: Logger.new(log)) }
     let(:file_stats) do
       {
@@ -38,7 +38,7 @@ RSpec.describe S3WebsiteDeploy::Client do
 
   describe "#source_files" do
     let(:log) { StringIO.new }
-    let(:config) { S3WebsiteDeploy::Configuration.new(source: "spec/dummy", region: "ap-northeast-1", bucket: "some-bucket", prefix: "") }
+    let(:config) { S3WebsiteDeploy::Configuration.new(source: "spec/dummy", region: "ap-northeast-1", bucket: "some-bucket", prefix: "", dryrun: false) }
     let(:client) { S3WebsiteDeploy::Client.new(config, logger: Logger.new(log)) }
     it "list files" do
       expect(client.source_files.map(&:path)).to match_array(%w(deploy.yml favicon.ico index.html dir/dir/hello.txt))
