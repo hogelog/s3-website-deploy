@@ -78,7 +78,7 @@ module S3WebsiteDeploy
     def source_files
       source_directory = Pathname.new(@config.source)
       files = []
-      Pathname.glob(File.join(@config.source, "**", "*")).map do |pathname|
+      Pathname.glob(source_directory.join("**", "*").to_s).map do |pathname|
         next if pathname.directory?
         path = pathname.to_s
         content_md5 = Digest::MD5.hexdigest(File.binread(path))
