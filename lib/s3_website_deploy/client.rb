@@ -16,6 +16,7 @@ module S3WebsiteDeploy
     end
 
     def run
+      @logger.info("---- DRY RUN ----") if @config.dryrun
       @logger.info("Start deploying #{@config.source} -> s3://#{@config.bucket}/#{@config.prefix}")
       file_stats = fetch_file_stats
       deploy(file_stats)
@@ -57,6 +58,7 @@ module S3WebsiteDeploy
     end
 
     def deploy_local_file(local_file)
+      return if @config.dryrun
       key = "#{@config.prefix}#{local_file.path}"
       File.open(local_file.local_path, "rb") do |file|
         s3.put_object(
@@ -68,6 +70,7 @@ module S3WebsiteDeploy
     end
 
     def delete_remote_file(remote_file)
+      return if @config.dryrun
       key = "#{@config.prefix}#{remote_file.path}"
       s3.delete_object(
         bucket: @config.bucket,
