@@ -5,8 +5,6 @@ require "aws-sdk-s3"
 
 module S3WebsiteDeploy
   class Client
-    CONTENT_MD5_KEY = "content-md5"
-
     LocalFile = Struct.new(:path, :local_path, :content_md5)
     S3File = Struct.new(:path, :etag)
 
