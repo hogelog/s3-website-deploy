@@ -1,4 +1,6 @@
-# S3WebsiteDeploy [![CircleCI](https://circleci.com/gh/hogelog/s3-website-deploy.svg?style=svg)](https://circleci.com/gh/hogelog/s3-website-deploy)
+# S3WebsiteDeploy
+[![CircleCI](https://circleci.com/gh/hogelog/s3-website-deploy.svg?style=svg)](https://circleci.com/gh/hogelog/s3-website-deploy)
+[![Gem Version](https://badge.fury.io/rb/s3-website-deploy.svg)](http://badge.fury.io/rb/s3-website-deploy)
 
 s3-website-deploy is deploy tool for AWS S3 Website.
 
