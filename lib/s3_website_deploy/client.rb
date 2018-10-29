@@ -2,6 +2,7 @@ require "logger"
 require "pathname"
 
 require "aws-sdk-s3"
+require "mini_mime"
 
 module S3WebsiteDeploy
   class Client
@@ -59,11 +60,13 @@ module S3WebsiteDeploy
     def deploy_local_file(local_file)
       return if @config.dryrun
       key = "#{@config.prefix}#{local_file.path}"
+      content_type = MiniMime.lookup_by_filename(local_file.path).content_type
       File.open(local_file.local_path, "rb") do |file|
         s3.put_object(
           body: file,
           bucket: @config.bucket,
           key: key,
+          content_type: content_type,
           cache_control: @cache_policy.cache_control(local_file.path),
         )
       end
