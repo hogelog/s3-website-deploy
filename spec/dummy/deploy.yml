@@ -2,3 +2,6 @@ source: .
 region: us-east-1
 bucket: some-bucket
 prefix: production/
+cache_policy:
+  "*.html":
+    cache_control: "max-age=600"

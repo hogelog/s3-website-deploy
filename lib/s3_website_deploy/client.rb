@@ -12,6 +12,7 @@ module S3WebsiteDeploy
 
     def initialize(config, logger: Logger.new(STDOUT))
       @config = config
+      @cache_policy = config.cache_policy
       @logger = logger
     end
 
@@ -65,6 +66,7 @@ module S3WebsiteDeploy
           body: file,
           bucket: @config.bucket,
           key: key,
+          cache_control: @cache_policy.cache_control(local_file.path),
         )
       end
     end
