@@ -20,6 +20,8 @@ I, [2018-05-22T00:18:02.842058 #37788]  INFO -- : Creating: index.html
 I, [2018-05-22T00:18:02.842105 #37788]  INFO -- : Finish deploying build/ -> s3://some-bucket/
 ```
 
+https://github.com/hogelog/s3-website-deploy/blob/master/spec/dummy/deploy.yml is example of deploy config.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
